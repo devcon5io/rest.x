@@ -77,7 +77,7 @@ public class RestxRequestDispatcher {
                 securityContext = basicAuthentication(vertxReq, vertxResp);
                 if (securityContext == null) // not authenticated
                 {
-                    //added by Gerald Mücke, create vertx security context, for pre-authenticated user
+                    //added by Gerald Muecke, create vertx security context, for pre-authenticated user
                     securityContext = new RestxSecurityContext(routingContext.user());
                 }
             } else {
