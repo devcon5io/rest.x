@@ -18,6 +18,10 @@
         <vertx.version>3.3.3</vertx.version>
         <resteasy.version>3.1.0.CR2</resteasy.version>
         <weld.version>2.2.9.Final</weld.version>
+        <properties>
+            <jacoco.include.pattern>rest.x.*</jacoco.include.pattern>
+            <pit.include.pattern>rest.x.*</pit.include.pattern>
+        </properties>
     </properties>
 
     <dependencies>
