@@ -22,15 +22,20 @@ public class ResteasyVerticle extends CDIVerticle {
     private Router router;
 
     @Override
-    protected void onVertxStart() {
+    public void start() throws Exception {
+
+        int port = 8080;
+        if(config().getInteger("http.port") != null){
+            port = config().getInteger("http.port");
+        }
 
 
         // Start the front end server using the Jax-RS controller
         this.httpServer = vertx.createHttpServer()
                                .requestHandler(router::accept)
-                               .listen(18080, result -> {
+                               .listen(port, result -> {
                                    //TODO add error if result is null (port already bound)
-                                   if(result != null) {
+                                   if(result.result() != null) {
                                        System.out.println("Server started on port " + result.result().actualPort());
                                    } else {
                                        throw new RuntimeException("Port already bound");
@@ -39,8 +44,8 @@ public class ResteasyVerticle extends CDIVerticle {
     }
 
     @Override
-    protected void onVertxStop() {
-        super.onVertxStop();
+    public void stop() throws Exception {
+        super.stop();
         this.httpServer.close();
     }
 

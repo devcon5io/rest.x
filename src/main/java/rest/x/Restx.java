@@ -9,6 +9,7 @@ import javax.enterprise.inject.Instance;
 import javax.enterprise.inject.Produces;
 import javax.inject.Inject;
 
+import io.vertx.core.DeploymentOptions;
 import io.vertx.core.Verticle;
 import io.vertx.core.Vertx;
 import org.jboss.weld.environment.se.Weld;
@@ -29,6 +30,9 @@ public class Restx {
     private Vertx vertx;
 
     @Inject
+    private Instance<DeploymentOptions> options;
+
+    @Inject
     @Any
     private Instance<Verticle> allDiscoveredVerticles;
 
@@ -36,7 +40,13 @@ public class Restx {
         this.vertx = Vertx.vertx();
 
         allDiscoveredVerticles.forEach(v -> {
-            vertx.deployVerticle(v);
+
+            if(options.isUnsatisfied()){
+                vertx.deployVerticle(v);
+            } else {
+                vertx.deployVerticle(v, options.get());
+            }
+
         });
     }
 

@@ -77,7 +77,7 @@ public class RestxHandlerImpl implements RestxHandler {
     private void populateInputStream(final RoutingContext routingContext, final VertxHttpRequest vertxRequest) {
 
         Buffer buff = routingContext.getBody();
-        if (buff.length() > 0) {
+        if (buff != null && buff.length() > 0) {
             ByteBufInputStream e = new ByteBufInputStream(buff.getByteBuf());
             vertxRequest.setInputStream(e);
         }

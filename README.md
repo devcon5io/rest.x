@@ -2,7 +2,7 @@
 Jax-RS & CDI Services with Vert.x
 
 Rest.x is not a framework on it's own. It is built on top of Vert.x, Resteasy and Weld.
-It provided a convenient way for developing Jax-RS based webservices, use
+It provides a convenient way for developing Jax-RS based webservices, use
 CDI and the non-blocking & highly scalable infrastructure of Vert.x.
 
 The glue code it provides, solves the biggest problem of Vert.x and resteasy - security -
