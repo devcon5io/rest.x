@@ -6,7 +6,7 @@ import io.vertx.ext.web.RoutingContext;
 import org.jboss.resteasy.spi.ResteasyDeployment;
 
 /**
- *
+ * Routing handler to delegate requests to Resteasy for processing.
  */
 public interface RestxHandler extends Handler<RoutingContext> {
 
