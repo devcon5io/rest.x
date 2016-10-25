@@ -5,6 +5,9 @@ import static io.tourniquet.junit.net.NetworkMatchers.port;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assume.assumeThat;
 
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import javax.annotation.PostConstruct;
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.inject.Produces;
 import javax.inject.Inject;
@@ -12,44 +15,42 @@ import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.atomic.AtomicInteger;
+import org.jboss.resteasy.plugins.server.vertx.VertxResteasyDeployment;
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
 
 import io.tourniquet.junit.net.NetworkUtils;
 import io.vertx.core.DeploymentOptions;
 import io.vertx.core.Vertx;
 import io.vertx.core.json.JsonObject;
 import io.vertx.ext.web.Router;
-import org.jboss.resteasy.plugins.server.vertx.VertxResteasyDeployment;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
 
 /**
  *
  */
 public class RestxTest {
 
-    private static AtomicInteger PORT = new AtomicInteger();
     private ExecutorService pool;
+
+    private int port;
 
     @Before
     public void setUp() throws Exception {
 
-        PORT.set(NetworkUtils.findAvailablePort());
         this.pool = Executors.newFixedThreadPool(1);
-        pool.submit(() -> Restx.main(new String[0]));
+        Restx.main(new String[0]);
+        this.port = Restx.container().instance().select(RouteConfig.class).get().getPort();
 
     }
 
     @Test
     public void main() throws Exception {
 
-        ensurePortReachable(PORT.get(), 100, 10);
+        ensurePortReachable(this.port, 100, 10);
 
         Client client = ClientBuilder.newClient();
-        String name = client.target("http://localhost:"+PORT.get()).path("/test/1").request().get(String.class);
+        String name = client.target("http://localhost:"+this.port).path("/test/1").request().get(String.class);
         assertEquals("success", name);
 
     }
@@ -81,6 +82,17 @@ public class RestxTest {
         @Inject
         private VertxResteasyDeployment deployment;
 
+        private int port;
+
+        @PostConstruct
+        public void initPort(){
+            this.port = NetworkUtils.findAvailablePort();
+        }
+
+        public int getPort() {
+            return port;
+        }
+
         @Produces
         @ApplicationScoped
         public Router getRouter(){
@@ -96,7 +108,7 @@ public class RestxTest {
         @ApplicationScoped
         public DeploymentOptions options(){
             DeploymentOptions options = new DeploymentOptions()
-                    .setConfig(new JsonObject().put("http.port", PORT.get())
+                    .setConfig(new JsonObject().put("http.port", port)
                     );
             return options;
         }

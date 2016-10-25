@@ -1,5 +1,6 @@
 package rest.x;
 
+import java.util.concurrent.atomic.AtomicReference;
 import javax.annotation.PreDestroy;
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.context.Initialized;
@@ -8,11 +9,12 @@ import javax.enterprise.inject.Any;
 import javax.enterprise.inject.Instance;
 import javax.enterprise.inject.Produces;
 import javax.inject.Inject;
+import org.jboss.weld.environment.se.Weld;
+import org.jboss.weld.environment.se.WeldContainer;
 
 import io.vertx.core.DeploymentOptions;
 import io.vertx.core.Verticle;
 import io.vertx.core.Vertx;
-import org.jboss.weld.environment.se.Weld;
 
 /**
  *
@@ -20,10 +22,20 @@ import org.jboss.weld.environment.se.Weld;
 @ApplicationScoped
 public class Restx {
 
-    public static void main(String[] args) {
+    private static AtomicReference<WeldContainer> CURRENT = new AtomicReference<>();
 
-        Weld weld = new Weld();
-        weld.initialize();
+    public static WeldContainer container(){
+        return CURRENT.get();
+    }
+
+    private static void setContainer(WeldContainer container){
+        if(!CURRENT.compareAndSet(null, container)){
+            throw new IllegalStateException("Container already initialized");
+        }
+    }
+
+    public static void main(String[] args) {
+        setContainer(new Weld().initialize());
     }
 
 
