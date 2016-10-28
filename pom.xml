@@ -10,7 +10,7 @@
 
     <groupId>io.devcon5</groupId>
     <artifactId>rest.x</artifactId>
-    <version>1.0</version>
+    <version>1.1-SNAPSHOT</version>
 
     <properties>
         <vertx.version>3.3.3</vertx.version>
