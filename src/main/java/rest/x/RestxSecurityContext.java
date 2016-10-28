@@ -4,7 +4,6 @@ import javax.ws.rs.core.SecurityContext;
 import java.security.Principal;
 
 import io.vertx.ext.auth.User;
-import org.jboss.weld.exceptions.UnsupportedOperationException;
 
 /**
  *
@@ -26,7 +25,6 @@ public class RestxSecurityContext implements SecurityContext {
 
     @Override
     public boolean isUserInRole(final String role) {
-
         throw new UnsupportedOperationException("isUserInRole not supported by this context");
     }
 
