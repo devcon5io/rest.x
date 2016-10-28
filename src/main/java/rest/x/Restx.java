@@ -15,6 +15,7 @@ import org.jboss.weld.environment.se.WeldContainer;
 import io.vertx.core.DeploymentOptions;
 import io.vertx.core.Verticle;
 import io.vertx.core.Vertx;
+import io.vertx.core.VertxOptions;
 
 /**
  *
@@ -42,6 +43,9 @@ public class Restx {
     private Vertx vertx;
 
     @Inject
+    private Instance<VertxOptions> vertxOptions;
+
+    @Inject
     private Instance<DeploymentOptions> options;
 
     @Inject
@@ -49,7 +53,12 @@ public class Restx {
     private Instance<Verticle> allDiscoveredVerticles;
 
     public void initVertx(@Observes @Initialized(ApplicationScoped.class) Object obj) {
-        this.vertx = Vertx.vertx();
+
+        if(vertxOptions.isUnsatisfied()){
+            this.vertx = Vertx.vertx();
+        } else {
+            this.vertx = Vertx.vertx(vertxOptions.get());
+        }
 
         allDiscoveredVerticles.forEach(v -> {
 
