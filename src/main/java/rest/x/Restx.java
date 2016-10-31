@@ -1,6 +1,5 @@
 package rest.x;
 
-import java.util.concurrent.atomic.AtomicReference;
 import javax.annotation.PreDestroy;
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.context.Initialized;
@@ -8,21 +7,24 @@ import javax.enterprise.event.Observes;
 import javax.enterprise.inject.Any;
 import javax.enterprise.inject.Instance;
 import javax.enterprise.inject.Produces;
+import javax.enterprise.inject.spi.BeanManager;
 import javax.inject.Inject;
-import org.jboss.weld.environment.se.Weld;
-import org.jboss.weld.environment.se.WeldContainer;
+import java.util.concurrent.atomic.AtomicReference;
 
 import io.vertx.core.DeploymentOptions;
 import io.vertx.core.Verticle;
 import io.vertx.core.Vertx;
 import io.vertx.core.VertxOptions;
+import org.jboss.weld.environment.se.Weld;
+import org.jboss.weld.environment.se.WeldContainer;
 
 /**
- *
+ * Launcher and Vertx Initializer.
  */
 @ApplicationScoped
 public class Restx {
 
+    private static AtomicReference<Args> ARGLINE = new AtomicReference<>();
     private static AtomicReference<WeldContainer> CURRENT = new AtomicReference<>();
 
     public static WeldContainer container(){
@@ -36,7 +38,10 @@ public class Restx {
     }
 
     public static void main(String[] args) {
+
         setContainer(new Weld().initialize());
+        BeanManager beanManager = CURRENT.get().getBeanManager();
+        CDIUtils.addBeanInstance(beanManager, new Args(args));
     }
 
 

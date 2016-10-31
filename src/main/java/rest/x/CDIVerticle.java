@@ -1,13 +1,8 @@
 package rest.x;
 
-import javax.enterprise.context.spi.CreationalContext;
-import javax.enterprise.inject.spi.AnnotatedType;
-import javax.enterprise.inject.spi.Bean;
 import javax.enterprise.inject.spi.BeanManager;
-import javax.enterprise.inject.spi.InjectionTarget;
 import javax.inject.Inject;
 import java.lang.annotation.Annotation;
-import java.util.Set;
 
 import io.vertx.core.AbstractVerticle;
 
@@ -33,17 +28,10 @@ public abstract class CDIVerticle extends AbstractVerticle {
      * @return an instance of the bean that matched the type
      */
     protected <T> T getBeanInstance(final Class<T> type, Annotation... annotations){
-        final Set<Bean<?>> beans = beanManager.getBeans(type, annotations);
-        final Bean<T> bean = (Bean<T>) beanManager.resolve(beans);
-        final CreationalContext<T> creationalContext = beanManager.createCreationalContext(bean);
-        return (T) beanManager.getReference(bean, type, creationalContext);
+        return CDIUtils.getBeanInstance(beanManager, type, annotations);
     }
 
     protected <T> void addBeanInstance(T bean){
-
-        final AnnotatedType type = beanManager.createAnnotatedType(bean.getClass());
-        final InjectionTarget target = beanManager.createInjectionTarget(type);
-        final CreationalContext cct = beanManager.createCreationalContext(null);
-        target.inject(bean, cct);
+        CDIUtils.addBeanInstance(beanManager, bean);
     }
 }
