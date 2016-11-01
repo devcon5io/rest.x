@@ -1,4 +1,4 @@
-package rest.x;
+package rest.x.cdi;
 
 import static org.junit.Assert.assertNotNull;
 import static org.mockito.Matchers.any;

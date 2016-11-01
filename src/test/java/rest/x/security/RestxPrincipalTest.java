@@ -1,4 +1,4 @@
-package rest.x;
+package rest.x.security;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertSame;
@@ -11,6 +11,7 @@ import org.junit.runner.RunWith;
 import org.mockito.Answers;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
+import rest.x.security.RestxPrincipal;
 
 /**
  *

@@ -1,4 +1,4 @@
-package rest.x;
+package rest.x.security;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
@@ -10,6 +10,8 @@ import io.vertx.ext.auth.User;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
+import rest.x.security.RestxPrincipal;
+import rest.x.security.RestxSecurityContext;
 
 /**
  *

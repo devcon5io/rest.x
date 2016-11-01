@@ -144,6 +144,6 @@ request which plays nicely with the Jax-RS way of asynchronous response processi
 
 ## Developing CDI Verticles
 
-To develop your own CDI verticles, you only have to inherit from `rest.x.CDIVerticle`
+To develop your own CDI verticles, you only have to inherit from `rest.x.cdi.CDIVerticle`
 
 Credit goes to John Ament's example [https://github.com/johnament/vertx-cdi] 
