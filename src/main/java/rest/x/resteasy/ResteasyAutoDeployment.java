@@ -30,6 +30,7 @@ public class ResteasyAutoDeployment {
     public VertxResteasyDeployment createDeployment() {
 
         VertxResteasyDeployment deployment = new VertxResteasyDeployment();
+        //TODO add support for various scopes
         deployment.setProviderClasses(registry.getClasses(Provider.class)
                                               .stream()
                                               .map(cls -> cls.getName())

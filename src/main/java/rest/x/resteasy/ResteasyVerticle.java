@@ -12,6 +12,7 @@ import rest.x.cdi.CDIVerticle;
  *
  */
 @ApplicationScoped
+@Resteasy
 public class ResteasyVerticle extends CDIVerticle {
 
     private HttpServer httpServer;

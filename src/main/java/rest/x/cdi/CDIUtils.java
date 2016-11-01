@@ -4,6 +4,7 @@ import static java.util.stream.Collectors.toList;
 
 import javax.enterprise.context.spi.CreationalContext;
 import javax.enterprise.inject.Default;
+import javax.enterprise.inject.Instance;
 import javax.enterprise.inject.spi.AnnotatedType;
 import javax.enterprise.inject.spi.Bean;
 import javax.enterprise.inject.spi.BeanManager;
@@ -11,6 +12,7 @@ import javax.enterprise.inject.spi.InjectionTarget;
 import javax.inject.Qualifier;
 import java.lang.annotation.Annotation;
 import java.util.Set;
+import java.util.function.Supplier;
 import java.util.stream.Stream;
 
 /**
@@ -77,6 +79,14 @@ public final class CDIUtils {
         return Stream.of(type.getAnnotations())
                                             .filter(a -> a.annotationType().isAnnotationPresent(Qualifier.class))
                                             .collect(toList()).toArray(new Annotation[0]);
+    }
+
+    public static <T> T getInstanceOrDefault(Instance<T> instance, Supplier<T> defaultSupplier, Annotation... qualifiers){
+        if(instance.isUnsatisfied()){
+            return defaultSupplier.get();
+        } else {
+            return instance.select(qualifiers).get();
+        }
     }
 
 }

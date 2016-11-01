@@ -28,6 +28,7 @@ public class CDIVertxLauncher {
     private Instance<VertxOptions> vertxOptions;
 
     @Inject
+    @Any
     private Instance<DeploymentOptions> options;
 
     @Inject
@@ -38,9 +39,11 @@ public class CDIVertxLauncher {
      * Initializes Vertx and deploys all discovered verticles. Verticle DeploymentOptions have to be provided
      * via CDI and can be assigned to specific Verticles using qualifier annotations on producers and Verticles.
      * @param obj
+     *  unused
      */
     public void initVertx(@Observes
                           @Initialized(ApplicationScoped.class) Object obj) {
+
 
         if(vertxOptions.isUnsatisfied()){
             this.vertx = Vertx.vertx();

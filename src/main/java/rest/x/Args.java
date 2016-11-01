@@ -1,8 +1,8 @@
 package rest.x;
 
-import static java.util.Arrays.asList;
 import static java.util.Collections.unmodifiableList;
 
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -13,14 +13,14 @@ public class Args {
     private final List<String> args;
 
     public Args(String[] args){
-        this.args = unmodifiableList(asList(args));
+        this.args = unmodifiableList(Arrays.asList(args));
     }
 
-    public List<String> getArgs() {
+    public List<String> asList() {
         return args;
     }
 
-    public String[] getArgsArray(){
+    public String[] asArray(){
         return args.toArray(new String[0]);
     }
 }
