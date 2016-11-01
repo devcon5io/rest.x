@@ -1,4 +1,4 @@
-package rest.x;
+package rest.x.resteasy;
 
 import javax.ws.rs.core.SecurityContext;
 import java.io.IOException;
@@ -20,6 +20,7 @@ import org.jboss.resteasy.spi.HttpResponse;
 import org.jboss.resteasy.spi.ResteasyProviderFactory;
 import org.jboss.resteasy.util.HttpHeaderNames;
 import org.jboss.resteasy.util.HttpResponseCodes;
+import rest.x.security.RestxSecurityContext;
 
 /**
  * Helper/delegate class to unify Servlet and Filter dispatcher implementations
@@ -27,7 +28,6 @@ import org.jboss.resteasy.util.HttpResponseCodes;
  * @author <a href="mailto:bill@burkecentral.com">Bill Burke</a>
  * @author Norman Maurer
  * @author Gerald M&uuml;cke
- * @version $Revision: 1 $
  */
 public class RestxRequestDispatcher {
 

@@ -1,4 +1,4 @@
-package rest.x;
+package rest.x.resteasy;
 
 import io.vertx.core.Handler;
 import io.vertx.core.Vertx;

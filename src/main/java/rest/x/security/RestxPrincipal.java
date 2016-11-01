@@ -1,11 +1,11 @@
-package rest.x;
+package rest.x.security;
 
 import java.security.Principal;
 
 import io.vertx.ext.auth.User;
 
 /**
- *
+ * Principal to represent a Vert.x {@link io.vertx.ext.auth.User}.
  */
 public class RestxPrincipal implements Principal {
 
@@ -16,6 +16,11 @@ public class RestxPrincipal implements Principal {
         this.user = user;
     }
 
+    /**
+     * Provides access to the currently authenticated Vert.x user.
+     * @return
+     *  the current Vert.x user.
+     */
     public User getUser() {
 
         return user;

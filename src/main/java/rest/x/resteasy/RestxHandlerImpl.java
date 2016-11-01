@@ -1,4 +1,4 @@
-package rest.x;
+package rest.x.resteasy;
 
 import java.io.IOException;
 

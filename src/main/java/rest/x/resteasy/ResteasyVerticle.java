@@ -1,4 +1,4 @@
-package rest.x;
+package rest.x.resteasy;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
@@ -6,6 +6,7 @@ import javax.inject.Inject;
 import io.vertx.core.Vertx;
 import io.vertx.core.http.HttpServer;
 import io.vertx.ext.web.Router;
+import rest.x.cdi.CDIVerticle;
 
 /**
  *
@@ -29,12 +30,10 @@ public class ResteasyVerticle extends CDIVerticle {
             port = config().getInteger("http.port");
         }
 
-
         // Start the front end server using the Jax-RS controller
         this.httpServer = vertx.createHttpServer()
                                .requestHandler(router::accept)
                                .listen(port, result -> {
-                                   //TODO add error if result is null (port already bound)
                                    if(result.result() != null) {
                                        System.out.println("Server started on port " + result.result().actualPort());
                                    } else {

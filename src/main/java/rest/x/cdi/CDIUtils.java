@@ -1,18 +1,32 @@
-package rest.x;
+package rest.x.cdi;
+
+import static java.util.stream.Collectors.toList;
 
 import javax.enterprise.context.spi.CreationalContext;
+import javax.enterprise.inject.Default;
 import javax.enterprise.inject.spi.AnnotatedType;
 import javax.enterprise.inject.spi.Bean;
 import javax.enterprise.inject.spi.BeanManager;
 import javax.enterprise.inject.spi.InjectionTarget;
+import javax.inject.Qualifier;
 import java.lang.annotation.Annotation;
 import java.util.Set;
+import java.util.stream.Stream;
 
 /**
  * Util class for interacting with the CDI container and bean manager
  */
 public final class CDIUtils {
     private CDIUtils(){}
+
+    private static final Default DEFAULT_LITERAL = new Default(){
+
+        @Override
+        public Class<? extends Annotation> annotationType() {
+
+            return Default.class;
+        }
+    };
 
     /**
      * Retrieves an instance of a specific type and optionally with specific annotations from the CDI context
@@ -48,6 +62,21 @@ public final class CDIUtils {
         final InjectionTarget target = beanManager.createInjectionTarget(type);
         final CreationalContext cct = beanManager.createCreationalContext(null);
         target.inject(bean, cct);
+    }
+
+    /**
+     * Fetches the type-level qualifier annotations of a specific instance. If the instance's type has
+     * no qualifiers, array is 0-sized..
+     * @param instance
+     *  the instance to fetch the annotations from
+     * @return
+     *  the qualifier annotations of the instance
+     */
+    public static Annotation[] getQualifiers(Object instance){
+        Class<?> type = instance.getClass();
+        return Stream.of(type.getAnnotations())
+                                            .filter(a -> a.annotationType().isAnnotationPresent(Qualifier.class))
+                                            .collect(toList()).toArray(new Annotation[0]);
     }
 
 }

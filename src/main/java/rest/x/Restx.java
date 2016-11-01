@@ -1,32 +1,24 @@
 package rest.x;
 
-import javax.annotation.PreDestroy;
-import javax.enterprise.context.ApplicationScoped;
-import javax.enterprise.context.Initialized;
-import javax.enterprise.event.Observes;
-import javax.enterprise.inject.Any;
-import javax.enterprise.inject.Instance;
-import javax.enterprise.inject.Produces;
 import javax.enterprise.inject.spi.BeanManager;
-import javax.inject.Inject;
 import java.util.concurrent.atomic.AtomicReference;
 
-import io.vertx.core.DeploymentOptions;
-import io.vertx.core.Verticle;
-import io.vertx.core.Vertx;
-import io.vertx.core.VertxOptions;
 import org.jboss.weld.environment.se.Weld;
 import org.jboss.weld.environment.se.WeldContainer;
+import rest.x.cdi.CDIUtils;
 
 /**
- * Launcher and Vertx Initializer.
+ * Launcher and Container reference.
  */
-@ApplicationScoped
 public class Restx {
 
-    private static AtomicReference<Args> ARGLINE = new AtomicReference<>();
     private static AtomicReference<WeldContainer> CURRENT = new AtomicReference<>();
 
+    /**
+     * Provides access to the current CDI Container.
+     * @return
+     *  the current CDI container.
+     */
     public static WeldContainer container(){
         return CURRENT.get();
     }
@@ -44,46 +36,4 @@ public class Restx {
         CDIUtils.addBeanInstance(beanManager, new Args(args));
     }
 
-
-    private Vertx vertx;
-
-    @Inject
-    private Instance<VertxOptions> vertxOptions;
-
-    @Inject
-    private Instance<DeploymentOptions> options;
-
-    @Inject
-    @Any
-    private Instance<Verticle> allDiscoveredVerticles;
-
-    public void initVertx(@Observes @Initialized(ApplicationScoped.class) Object obj) {
-
-        if(vertxOptions.isUnsatisfied()){
-            this.vertx = Vertx.vertx();
-        } else {
-            this.vertx = Vertx.vertx(vertxOptions.get());
-        }
-
-        allDiscoveredVerticles.forEach(v -> {
-
-            if(options.isUnsatisfied()){
-                vertx.deployVerticle(v);
-            } else {
-                vertx.deployVerticle(v, options.get());
-            }
-
-        });
-    }
-
-    @Produces
-    @ApplicationScoped
-    public Vertx getVertx() {
-        return vertx;
-    }
-
-    @PreDestroy
-    public void shutdown() {
-        this.vertx.close();
-    }
 }
