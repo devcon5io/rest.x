@@ -44,7 +44,6 @@ public class CDIVertxLauncher {
     public void initVertx(@Observes
                           @Initialized(ApplicationScoped.class) Object obj) {
 
-
         if(vertxOptions.isUnsatisfied()){
             this.vertx = Vertx.vertx();
         } else {

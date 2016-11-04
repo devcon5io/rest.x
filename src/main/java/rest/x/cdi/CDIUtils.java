@@ -81,6 +81,20 @@ public final class CDIUtils {
                                             .collect(toList()).toArray(new Annotation[0]);
     }
 
+    /**
+     * Selects an injected instance from the {@link javax.enterprise.inject.Instance} field that matches the qualifiers.
+     * If no matching instance was found, the default supplier is used to create default instance.
+     * @param instance
+     *  the instance injection container
+     * @param defaultSupplier
+     *  default supplier that provides a default instance in case no injected bean satisfies the selection
+     * @param qualifiers
+     *  optional qualifier to select the instance
+     * @param <T>
+     *  the type of the bean to fetch
+     * @return
+     *  a bean instance.
+     */
     public static <T> T getInstanceOrDefault(Instance<T> instance, Supplier<T> defaultSupplier, Annotation... qualifiers){
         if(instance.isUnsatisfied()){
             return defaultSupplier.get();
